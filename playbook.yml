@@ -1,0 +1,10 @@
+---
+- hosts: ansible
+  become: false
+  roles:
+   - basic
+
+- hosts: kubernetes
+  become: false
+  roles:
+   - nodes
