@@ -1,26 +1,16 @@
-- name: For each host, ssh-copy-id my ssh public keys to the host
-  shell: "sshpass -p {{ ansible_ssh_pass }} ssh-copy-id {{ item }}"
-  with_items: "{{ ssh_known_hosts }}"
-  when: not (( ansible_ssh_pass is undefined ) or ( ansible_ssh_pass is none ) or ( ansible_ssh_pass | trim == ''))
-  tags: 
-  - sshcopy
+- name: "installing epel"
+  yum: name=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-- name: "apt-get update"
-  apt:
-        update_cache: yes
+- name: upgrade all packages
+  yum: name=* state=latest
 
 - name: "installing app"
-  apt: pkg={{ item }}  state=present
+  yum: pkg={{ item }}  state=latest
   with_items:
-  - vim
-  - htop
-  - iftop
   - docker
-  - docker-compose
   - rsync
+  - openvpn
+  - easy-rsa
 
-- name: "copying .bashrc"
-  synchronize: src=/etc/bash.bashrc dest=/etc/bash.bashrc
-
-- name: "copying docker project"
-  synchronize: src=/root/proj dest=/root/proj
+#- name: "copying docker project"
+#  synchronize: src=/root/proj dest=/root/proj

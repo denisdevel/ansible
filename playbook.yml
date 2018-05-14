@@ -7,4 +7,9 @@
 - hosts: kubernetes
   become: false
   roles:
+   - kubernates
+
+- hosts: nodes
+  become: false
+  roles:
    - nodes
