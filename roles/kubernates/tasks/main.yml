@@ -1,0 +1,16 @@
+- name: "repos sync"
+  copy: src=/etc/yum.repos.d dest=/etc
+
+- name: "install crictl"
+  copy: src=/usr/bin/crictl dest=/usr/bin
+#- name: "installing repos keys"
+#  rpm_key:
+#    key: https://packages.cloud.google.com/yum/doc/yum-key.gpg
+#    state: present
+
+- name: "installing kubernates"
+  yum: pkg={{ item }}  state=latest
+  with_items:
+  - kubelet
+  - kubeadm
+  - kubectl
