@@ -13,3 +13,8 @@
   become: false
   roles:
    - nodes
+
+- hosts: docker
+  become: false
+  roles:
+   - docker

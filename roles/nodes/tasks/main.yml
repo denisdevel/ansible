@@ -1,6 +1,14 @@
+- name: "enable bridge-nf-call-iptables"
+  shell: echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
+
+- name: "set cgroup driver"
+  shell: sed -i "s/cgroup-driver=cgroupfs/cgroup-driver=systemd/g" /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 - name: "copy script"
   copy: src=../../scripts/addnode.sh dest=/root/addnode.sh
+
+#- name: "copy /etc/cni"
+#  copy: src=/etc/cni dest=/etc
 
 - name: "add node to the cluster"
   shell: systemctl enable docker && systemctl start docker && systemctl enable kubelet.service && systemctl start kubelet.service && chmod +x /root/addnode.sh && sh /root/addnode.sh

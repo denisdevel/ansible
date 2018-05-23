@@ -1,0 +1,4 @@
+
+- name: "add insecure docker registyr"
+  shell: echo "172.31.100.1   registry" >> /etc/hosts && echo "{ \"insecure-registries\":[\"registry:5000\"] }" > /etc/docker/daemon.json && systemctl restart docker
+
