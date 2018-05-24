@@ -9,11 +9,4 @@
   with_items:
   - docker
   - rsync
-  - openvpn
   - easy-rsa
-
-- name: "copy openvpn config "
-  copy: src=/root/ansible/scripts/client.conf dest=/etc/openvpn
-
-- name: "configuring openvpn"
-  shell: systemctl enable openvpn@client && systemctl start openvpn@client 

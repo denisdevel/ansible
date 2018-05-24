@@ -1,0 +1,25 @@
+- name: "installing app"
+  yum: pkg={{ item }}  state=latest
+  with_items:
+  - openvpn
+  - easy-rsa
+
+- name: "copy openvpn config "
+  copy: src=/root/ansible/scripts/client.conf dest=/etc/openvpn
+
+- name: "create certigicates for client"
+  local_action: command scripts/create_ovpn_certs.sh {{ inventory_hostname }}
+  ignore_errors: yes
+
+- name: "copy ca.crt"
+  copy: src=/root/pki/ca.crt dest=/etc/openvpn/
+- name: "copy ta.key"
+  copy: src=/root/pki/ta.key dest=/etc/openvpn/
+- name: "copy client.crt"
+  copy: src=/root/pki/issued/vpn-{{ inventory_hostname }}.crt dest=/etc/openvpn/client.crt
+- name: "copy client private key"
+  copy: src=/root/pki/private/vpn-{{ inventory_hostname }}.key dest=/etc/openvpn/client.key
+
+- name: "start openvpn"
+  shell: systemctl enable openvpn@client && systemctl start openvpn@client
+
